@@ -1,16 +1,9 @@
 import math
 
 
-def build_alphabet_dict(alphabet: [str]) -> dict:
-    result = {}
-    for a in alphabet:
-        result[a] = ord(a)
-    return result
-
-
 class RSA:
     def __init__(self, alphabet: [str], p: int, q: int):
-        self.alphabet = build_alphabet_dict(alphabet)
+        self.alphabet = alphabet
         self.p = p
         self.q = q
 
@@ -18,12 +11,6 @@ class RSA:
         self.f = (p - 1) * (q - 1)
         self.e = self.__calculate_e()
         self.d = self.__calculate_d()
-
-    def hash(self, data: str) -> str:
-        result = 0
-        for s in data:
-            result += self.alphabet[s]
-        return str(result % len(self.alphabet))
 
     def __calculate_e(self) -> int:
         e = 2
@@ -47,11 +34,11 @@ class RSA:
     def __get_indexes(self, data: str) -> list:
         result = []
         for s in data:
-            result.append(self.alphabet[s] + 1)
+            result.append(self.alphabet.index(s))
         return result
 
     def decode(self, encoded: list) -> str:
-        result = ""
+        result = ''
         for e in encoded:
-            result += chr((e ** self.d) % self.n)
+            result += self.alphabet[(e ** self.d) % self.n]
         return result

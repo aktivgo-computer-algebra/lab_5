@@ -1,31 +1,44 @@
 import string
 
 from rsa import RSA
+from hash import Hash
 from edc import EDC
 
 if __name__ == "__main__":
     alphabet = string.digits + string.ascii_lowercase
-    p = 3  # 4999
-    q = 7  # 4993
+    p = 7  # 4999
+    q = 13  # 4993
 
     rsa = RSA(alphabet, p, q)
 
-    data = str(input("input text: "))
+    data = str(input('input text: '))
 
     encoded = rsa.encode(data)
 
-    print("encoded:", encoded)
+    print('encoded: ', encoded)
 
     decoded = rsa.decode(encoded)
 
-    print("decoded:", decoded)
+    print('decoded: ', decoded)
 
-    edc = EDC(rsa)
+    hash = Hash(alphabet, 2, 2, 10000)
+    edc = EDC(hash, rsa)
 
     cipher_hash = edc.sign(data)
 
-    print("cipher_hash:", cipher_hash)
+    print('\ncipher hash: ', cipher_hash)
 
-    edc.check(data, cipher_hash)
+    res = edc.check(data, cipher_hash)
+    if res:
+        print('Данные подлинные')
+    else:
+        print('Данные не подлинные')
 
-    print("Данные подлинные")
+    data = data[len(data) - 1:] + data[1:len(data) - 1] + data[:1]
+    print('\nnew data: ', data)
+
+    res = edc.check(data, cipher_hash)
+    if res:
+        print('Данные подлинные')
+    else:
+        print('Данные не подлинные')
