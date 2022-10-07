@@ -1,5 +1,5 @@
-from rsa import RSA
-from hash import Hash
+from encryption.rsa import RSA
+from hashing.scaling import Hash
 
 
 class EDC:

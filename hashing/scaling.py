@@ -1,11 +1,11 @@
-class Hash:
+class ScalingHash:
     def __init__(self, alphabet: [str], a: int, b: int, m: int):
         self.alphabet = alphabet
         self.a = a
         self.b = b
         self.m = m
 
-    def scaling(self, data: str) -> int:
+    def hash(self, data: str) -> int:
         t0 = (self.a * self.alphabet.index(data[0]) + self.b) % self.m
         result = self.alphabet.index(data[0]) ^ t0
 

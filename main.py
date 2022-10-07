@@ -1,8 +1,8 @@
 import string
 
-from rsa import RSA
-from hash import Hash
-from edc import EDC
+from encryption.rsa import RSA
+from hashing.scaling import ScalingHash
+from encryption.edc import EDC
 
 if __name__ == "__main__":
     alphabet = string.digits + string.ascii_lowercase
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     print('decoded: ', decoded)
 
-    hash = Hash(alphabet, 2, 2, 10000)
+    hash = ScalingHash(alphabet, 2, 2, 10000)
     edc = EDC(hash, rsa)
 
     cipher_hash = edc.sign(data)
