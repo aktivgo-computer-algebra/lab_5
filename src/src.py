@@ -4,8 +4,16 @@ import math
 class SRC:
     def __init__(self, modules: list[int]):
         self.modules = modules
+        self.__validate_modules()
+
         self.M = math.prod(self.modules)
         print('M =', self.M)
+
+    def __validate_modules(self):
+        for i in range(len(self.modules)):
+            for j in range(i + 1, len(self.modules)):
+                if math.gcd(self.modules[i], self.modules[j]) != 1:
+                    raise BaseException('modules are not mutually simple')
 
     def __validate_number(self, a: [int]):
         if len(a) != len(self.modules):
@@ -21,14 +29,20 @@ class SRC:
     def from_dec_to_src(self, num) -> [int]:
         return [num % m for m in self.modules]
 
+    def __calculate_m_inv(self, Mi: int, mi: int) -> int:
+        Minv = 1
+        while (Mi * Minv) % mi != 1:
+            Minv += 1
+        return Minv
+
     def from_src_to_dec(self, a: [int]) -> int:
         self.__validate_number(a)
 
         ci = []
         for i in range(len(a)):
-            mi = int(self.M / self.modules[i])
-            m_inv = mi % self.modules[i]
-            ci.append(mi * m_inv)
+            Mi = int(self.M / self.modules[i])
+            Minv = self.__calculate_m_inv(Mi, self.modules[i])
+            ci.append(Mi * Minv)
 
         x0 = 0
         for i in range(len(a)):
